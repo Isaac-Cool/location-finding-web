@@ -1,4 +1,30 @@
 // This example creates a simple polygon representing the Bermuda Triangle.
+function databaseQuery() {
+
+  let searchAddress = document.getElementById("address").value;
+address = searchAddress
+responseData = {}
+
+
+  fetch("https://faas-tor1-70ca848e.doserverless.co/api/v1/web/fn-b65c37e3-e9f6-4073-ba91-2c92088a85bd/rest-sor/location.json", {
+  method: "POST",
+  body: JSON.stringify({
+    "location": address,
+    "radius": 50
+}),
+headers: {
+  "Content-type": "application/json; charset=UTF-8"
+}
+})
+  .then((response) => response.json())
+  .then((json) => {
+  responseData = json
+  initMap(responseData["data"][0]["input_data"]["lat"], responseData["data"][0]["input_data"]["lon"], 153)
+});
+  
+}
+
+
 function initMap(userLat, userLon, userRadius) {
 
     const map = new google.maps.Map(document.getElementById("map"), {
@@ -7,15 +33,9 @@ function initMap(userLat, userLon, userRadius) {
       mapTypeId: "terrain",
     });
 
-    const userLocation = [{lat: userLat, lng: userLon}, userRadius]
 
-    // Define the LatLng coordinates for the polygon's path.
-    const triangleCoords = [
-      { lat: 25.774, lng: -80.19 },
-      { lat: 18.466, lng: -66.118 },
-      { lat: 32.321, lng: -64.757 },
-      { lat: 25.774, lng: -80.19 },
-    ];
+    const userLocation = [{lat: userLat, lng: userLon}, userRadius]
+  
     // Construct the polygon.
     const radiusOfUser = new google.maps.Circle({
       strokeColor: "#FF0000",
