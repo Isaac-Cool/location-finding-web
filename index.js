@@ -1,27 +1,33 @@
-// Initialize and add the map
-let map;
+// This example creates a simple polygon representing the Bermuda Triangle.
+function initMap(userLat, userLon, userRadius) {
 
-async function initMap() {
-  // The location of Uluru
-  const position = { lat: -25.344, lng: 131.031 };
-  // Request needed libraries.
-  //@ts-ignore
-  const { Map } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 16,
+      center: { lat: userLat, lng: userLon},
+      mapTypeId: "terrain",
+    });
 
-  // The map, centered at Uluru
-  map = new Map(document.getElementById("map"), {
-    zoom: 4,
-    center: position,
-    mapId: "DEMO_MAP_ID",
-  });
+    const userLocation = [{lat: userLat, lng: userLon}, userRadius]
 
-  // The marker, positioned at Uluru
-  const marker = new AdvancedMarkerElement({
-    map: map,
-    position: position,
-    title: "Uluru",
-  });
-}
-
-initMap();
+    // Define the LatLng coordinates for the polygon's path.
+    const triangleCoords = [
+      { lat: 25.774, lng: -80.19 },
+      { lat: 18.466, lng: -66.118 },
+      { lat: 32.321, lng: -64.757 },
+      { lat: 25.774, lng: -80.19 },
+    ];
+    // Construct the polygon.
+    const radiusOfUser = new google.maps.Circle({
+      strokeColor: "#FF0000",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#FF0000",
+      fillOpacity: 0.35,
+      map,
+      center: { lat: userLat, lng: userLon},
+      radius: userRadius,
+    });
+  
+  }
+  
+  window.initMap = initMap;
