@@ -33,11 +33,20 @@ function prosData(databaseJSON) {
   for (const e in databaseJSON["data"])
     if (databaseJSON["data"][parseInt(e)]["type"] == "exclusion") {
 
-      exclusionArraySingle = []      
+      exclusionArraySingle = []
+      if (databaseJSON["data"][parseInt(e)]["geometry"]["type"] == "MultiPolygon") {     
       for (const f in databaseJSON["data"][parseInt(e)]["geometry"]["coordinates"][0][0]) {
         exclusionArraySingle.push({lat: databaseJSON["data"][parseInt(e)]["geometry"]["coordinates"][0][0][parseInt(f)][1], lng: databaseJSON["data"][parseInt(e)]["geometry"]["coordinates"][0][0][parseInt(f)][0]})
       }
       exclusionArray.push(exclusionArraySingle)
+    }
+
+    if (databaseJSON["data"][parseInt(e)]["geometry"]["type"] == "Polygon") {     
+      for (const f in databaseJSON["data"][parseInt(e)]["geometry"]["coordinates"][0]) {
+        exclusionArraySingle.push({lat: databaseJSON["data"][parseInt(e)]["geometry"]["coordinates"][0][parseInt(f)][1], lng: databaseJSON["data"][parseInt(e)]["geometry"]["coordinates"][0][parseInt(f)][0]})
+      }
+      exclusionArray.push(exclusionArraySingle)
+    }
     }
 
 
@@ -51,7 +60,7 @@ function initMap(userLat, userLon, userRadius, polyData) {
     const map = new google.maps.Map(document.getElementById("map"), {
       zoom: 16,
       center: { lat: userLat, lng: userLon},
-      mapTypeId: "satellite",
+      mapTypeId: "hybrid",
     });
 
 
