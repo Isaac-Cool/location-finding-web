@@ -7,8 +7,12 @@ function databaseQuery() {
   let searchRadius = document.getElementById("radiusSearch").value;
   drawRadius = document.getElementById("radiusDraw").value;
   let address = searchAddress
-  let responseData = {}
-
+  
+  if (searchRadius > parseInt("3500")) {
+    alert("Search Radius set over 3.5km \n Setting to 3.5km \n This is due to system limitaions this will be fixed")
+    searchRadius = 3500
+  }
+  
 
 
   fetch("https://faas-tor1-70ca848e.doserverless.co/api/v1/web/fn-b65c37e3-e9f6-4073-ba91-2c92088a85bd/rest-sor/location.json", {
@@ -49,14 +53,13 @@ function prosData(databaseJSON) {
     }
     }
 
-
     initMap(databaseJSON["data"][0]["input_data"]["lat"], databaseJSON["data"][0]["input_data"]["lon"], 153, exclusionArray)
 }
 
 
 function initMap(userLat, userLon, userRadius, polyData) {
 
-    console.log(polyData)
+    
     const map = new google.maps.Map(document.getElementById("map"), {
       zoom: 16,
       center: { lat: userLat, lng: userLon},
@@ -76,7 +79,7 @@ function initMap(userLat, userLon, userRadius, polyData) {
       center: { lat: userLat, lng: userLon},
       radius: parseInt(drawRadius),
     });
-  
+    
     for (const point in polyData) {
       console.log(polyData[parseInt(point)])
       const pointChart = new google.maps.Polygon({
@@ -93,4 +96,3 @@ function initMap(userLat, userLon, userRadius, polyData) {
 
   }
   
-  window.initMap = initMap;
