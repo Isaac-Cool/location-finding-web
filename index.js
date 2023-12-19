@@ -8,6 +8,16 @@ function databaseQuery() {
   drawRadius = document.getElementById("radiusDraw").value;
   let address = searchAddress
   
+if (address == "") {
+  alert("You must search for an address")
+  return
+}
+
+if (searchRadius == "") {
+  alert("You must enter a search radius")
+  return
+}
+
   if (searchRadius > parseInt("3500")) {
     alert("Search Radius set over 3.5km \n Setting to 3.5km \n This is due to system limitaions this will be fixed")
     searchRadius = 3500
